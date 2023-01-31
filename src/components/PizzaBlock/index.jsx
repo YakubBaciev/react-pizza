@@ -3,7 +3,7 @@ import React from "react";
 function PizzaBlock({
   id,
   imageUrl,
-  name,
+  tittle,
   types,
   sizes,
   price,
@@ -25,7 +25,7 @@ function PizzaBlock({
   return (
     <div className="pizza-block">
       <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-      <h4 className="pizza-block__title">{name}</h4>
+      <h4 className="pizza-block__title">{tittle}</h4>
       <div className="pizza-block__selector">
         <ul>
           {types.map((item, index) => (
