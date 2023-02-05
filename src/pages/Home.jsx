@@ -5,7 +5,7 @@ import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [items, setAtems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [activeIndex, setActiveIndex] = React.useState(0);
@@ -19,7 +19,9 @@ const Home = () => {
     fetch(
       `https://639c95a242e3ad6927364e55.mockapi.io/items?${
         activeIndex > 0 ? `category=${activeIndex}` : ""
-      }&sortBy=${activeSort.sortProperty}&order=desc`
+      }&sortBy=${activeSort.sortProperty}&order=desc${
+        searchValue ? `&search=${searchValue}` : ""
+      }`
     )
       .then((res) => {
         return res.json();
@@ -29,7 +31,7 @@ const Home = () => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [activeIndex, activeSort]);
+  }, [activeIndex, activeSort, searchValue]);
 
   return (
     <div className="container">
