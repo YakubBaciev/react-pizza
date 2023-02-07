@@ -1,20 +1,18 @@
 import React from "react";
-import { SearchContext } from "../App";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  const { searchValue } = React.useContext(SearchContext);
+  const activeSort = useSelector((state) => state.sortSlice.activeSort);
+  const activeIndex = useSelector((state) => state.categoriesSlice.activeIndex);
+  const searchValue = useSelector((state) => state.searchSlice.searchValue);
+
   const [items, setAtems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const [activeSort, setActiveSort] = React.useState({
-    name: "популярности",
-    sortProperty: "rating",
-  });
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -38,11 +36,8 @@ const Home = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          activeIndex={activeIndex}
-          onClickCategorie={(i) => setActiveIndex(i)}
-        />
-        <Sort activeSort={activeSort} onClickSort={(i) => setActiveSort(i)} />
+        <Categories />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">

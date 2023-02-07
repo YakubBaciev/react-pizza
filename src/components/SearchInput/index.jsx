@@ -1,7 +1,11 @@
 import React from "react";
 import styles from "./SearchInput.module.scss";
+import { useSelector, useDispatch } from "react-redux";
+import { setSearchValue } from "../../redux/slices/searchSlice";
 
-const SearchInput = ({ searchValue, setSearchValue }) => {
+const SearchInput = () => {
+  const searchValue = useSelector((state) => state.searchSlice.searchValue);
+  const dispatch = useDispatch();
   return (
     <div className={styles.root}>
       <img
@@ -11,7 +15,7 @@ const SearchInput = ({ searchValue, setSearchValue }) => {
       />
       <input
         value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
+        onChange={(e) => dispatch(setSearchValue(e.target.value))}
         className={styles.searchInput}
         placeholder="Введите значение ..."
       />
