@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
@@ -16,20 +17,33 @@ const Home = () => {
 
   React.useEffect(() => {
     setIsLoading(true);
-    fetch(
-      `https://639c95a242e3ad6927364e55.mockapi.io/items?${
-        activeIndex > 0 ? `category=${activeIndex}` : ""
-      }&sortBy=${activeSort.sortProperty}&order=desc${
-        searchValue ? `&search=${searchValue}` : ""
-      }`
-    )
+    // fetch(
+    //   `https://639c95a242e3ad6927364e55.mockapi.io/items?${
+    //     activeIndex > 0 ? `category=${activeIndex}` : ""
+    //   }&sortBy=${activeSort.sortProperty}&order=desc${
+    //     searchValue ? `&search=${searchValue}` : ""
+    //   }`
+    // )
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then((json) => {
+    //     setAtems(json);
+    //     setIsLoading(false);
+    //   });
+    axios
+      .get(
+        `https://639c95a242e3ad6927364e55.mockapi.io/items?${
+          activeIndex > 0 ? `category=${activeIndex}` : ""
+        }&sortBy=${activeSort.sortProperty}&order=desc${
+          searchValue ? `&search=${searchValue}` : ""
+        }`
+      )
       .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setAtems(json);
+        setAtems(res.data);
         setIsLoading(false);
       });
+
     window.scrollTo(0, 0);
   }, [activeIndex, activeSort, searchValue]);
 

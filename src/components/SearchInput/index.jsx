@@ -1,11 +1,34 @@
 import React from "react";
+import debounce from "lodash.debounce";
 import styles from "./SearchInput.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { setSearchValue } from "../../redux/slices/searchSlice";
 
 const SearchInput = () => {
+  const updateSearchValue = React.useCallback(
+    debounce((srt) => {
+      dispatch(setSearchValue(srt));
+    }, 500),
+    []
+  );
+  const [value, setValue] = React.useState("");
+
+  const onChangeInput = (e) => {
+    setValue(e.target.value);
+    updateSearchValue(e.target.value);
+  };
+
   const searchValue = useSelector((state) => state.searchSlice.searchValue);
   const dispatch = useDispatch();
+
+  const inputRef = React.useRef();
+
+  const onClickClouse = () => {
+    dispatch(setSearchValue(""));
+    setValue("");
+    inputRef.current.focus();
+  };
+
   return (
     <div className={styles.root}>
       <img
@@ -14,14 +37,15 @@ const SearchInput = () => {
         alt="search"
       />
       <input
-        value={searchValue}
-        onChange={(e) => dispatch(setSearchValue(e.target.value))}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={styles.searchInput}
         placeholder="Введите значение ..."
       />
-      {searchValue && (
+      {value && (
         <img
-          onClick={() => setSearchValue("")}
+          onClick={() => onClickClouse()}
           className={styles.clouseImg}
           src="https://cdn-icons-png.flaticon.com/512/1828/1828747.png"
           alt="clouse"
