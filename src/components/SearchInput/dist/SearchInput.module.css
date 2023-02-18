@@ -1,0 +1,31 @@
+.root {
+  position: relative;
+  left: -120px;
+}
+.root .searchImg {
+  width: 27px;
+  height: 27px;
+  position: absolute;
+  left: 10px;
+  top: 6px;
+  opacity: 0.5;
+}
+.root .searchInput {
+  width: 450px;
+  height: 38px;
+  padding-left: 50px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+.root .clouseImg {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 5px;
+  top: 6px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+.root .clouseImg:hover {
+  opacity: 1;
+}
