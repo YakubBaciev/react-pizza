@@ -15,22 +15,7 @@ const Home = () => {
   const [items, setAtems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    setIsLoading(true);
-    // fetch(
-    //   `https://639c95a242e3ad6927364e55.mockapi.io/items?${
-    //     activeIndex > 0 ? `category=${activeIndex}` : ""
-    //   }&sortBy=${activeSort.sortProperty}&order=desc${
-    //     searchValue ? `&search=${searchValue}` : ""
-    //   }`
-    // )
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then((json) => {
-    //     setAtems(json);
-    //     setIsLoading(false);
-    //   });
+  const getPizza = () => {
     axios
       .get(
         `https://639c95a242e3ad6927364e55.mockapi.io/items?${
@@ -42,8 +27,14 @@ const Home = () => {
       .then((res) => {
         setAtems(res.data);
         setIsLoading(false);
+        console.log(111);
       });
+  };
 
+  React.useEffect(() => {
+    setIsLoading(true);
+    getPizza();
+    console.log(222);
     window.scrollTo(0, 0);
   }, [activeIndex, activeSort, searchValue]);
 
