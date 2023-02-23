@@ -1,41 +1,26 @@
 import React from "react";
-import axios from "axios";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
+
   const activeSort = useSelector((state) => state.sortSlice.activeSort);
   const activeIndex = useSelector((state) => state.categoriesSlice.activeIndex);
   const searchValue = useSelector((state) => state.searchSlice.searchValue);
+  const { items, status } = useSelector((state) => state.pizza);
 
-  const [items, setAtems] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  const getPizza = () => {
-    axios
-      .get(
-        `https://639c95a242e3ad6927364e55.mockapi.io/items?${
-          activeIndex > 0 ? `category=${activeIndex}` : ""
-        }&sortBy=${activeSort.sortProperty}&order=desc${
-          searchValue ? `&search=${searchValue}` : ""
-        }`
-      )
-      .then((res) => {
-        setAtems(res.data);
-        setIsLoading(false);
-        console.log(111);
-      });
+  const getPizza = async () => {
+    dispatch(fetchPizzas({ activeIndex, activeSort, searchValue }));
   };
 
   React.useEffect(() => {
-    setIsLoading(true);
     getPizza();
-    console.log(222);
-    window.scrollTo(0, 0);
   }, [activeIndex, activeSort, searchValue]);
 
   return (
@@ -46,9 +31,16 @@ const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
-        {isLoading
-          ? [...Array(8)].map((_, index) => <Skeleton key={index} />)
-          : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
+        {status === "error" ? (
+          <div>
+            <h2>ПРОИЗОШЛА ОШИБКА</h2>
+            <h3>Повторите попытку позже</h3>
+          </div>
+        ) : status === "loading" ? (
+          [...Array(8)].map((_, index) => <Skeleton key={index} />)
+        ) : (
+          items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)
+        )}
       </div>
     </div>
   );
